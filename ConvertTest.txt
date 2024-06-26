@@ -1,0 +1,140 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+public class ConvertModuleTest {
+
+    WebDriver driver;
+
+    @BeforeClass
+    public void setUp() {
+        // Set up the WebDriver (Chrome in this case)
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        // Navigate to the Convert module page
+        driver.get("https://example.com/convert");
+    }
+
+    @Test
+    public void testConvertUSDtoEUR() {
+        // Select USD as the source currency
+        WebElement sourceCurrency = driver.findElement(By.id("sourceCurrency"));
+        sourceCurrency.sendKeys("USD");
+
+        // Select EUR as the target currency
+        WebElement targetCurrency = driver.findElement(By.id("targetCurrency"));
+        targetCurrency.sendKeys("EUR");
+
+        // Enter amount to convert
+        WebElement amount = driver.findElement(By.id("amount"));
+        amount.sendKeys("100");
+
+        // Click Convert button
+        WebElement convertButton = driver.findElement(By.id("convertButton"));
+        convertButton.click();
+
+        // Verify the conversion result
+        WebElement result = driver.findElement(By.id("result"));
+        Assert.assertTrue(result.getText().contains("EUR"));
+    }
+
+    @Test
+    public void testConvertGBPtoJPY() {
+        // Select GBP as the source currency
+        WebElement sourceCurrency = driver.findElement(By.id("sourceCurrency"));
+        sourceCurrency.sendKeys("GBP");
+
+        // Select JPY as the target currency
+        WebElement targetCurrency = driver.findElement(By.id("targetCurrency"));
+        targetCurrency.sendKeys("JPY");
+
+        // Enter amount to convert
+        WebElement amount = driver.findElement(By.id("amount"));
+        amount.sendKeys("100");
+
+        // Click Convert button
+        WebElement convertButton = driver.findElement(By.id("convertButton"));
+        convertButton.click();
+
+        // Verify the conversion result
+        WebElement result = driver.findElement(By.id("result"));
+        Assert.assertTrue(result.getText().contains("JPY"));
+    }
+
+    @Test
+    public void testConvertINRtoAUD() {
+        // Select INR as the source currency
+        WebElement sourceCurrency = driver.findElement(By.id("sourceCurrency"));
+        sourceCurrency.sendKeys("INR");
+
+        // Select AUD as the target currency
+        WebElement targetCurrency = driver.findElement(By.id("targetCurrency"));
+        targetCurrency.sendKeys("AUD");
+
+        // Enter amount to convert
+        WebElement amount = driver.findElement(By.id("amount"));
+        amount.sendKeys("100");
+
+        // Click Convert button
+        WebElement convertButton = driver.findElement(By.id("convertButton"));
+        convertButton.click();
+
+        // Verify the conversion result
+        WebElement result = driver.findElement(By.id("result"));
+        Assert.assertTrue(result.getText().contains("AUD"));
+    }
+
+    @Test
+    public void testInvalidAmountInput() {
+        // Select any source and target currency
+        WebElement sourceCurrency = driver.findElement(By.id("sourceCurrency"));
+        sourceCurrency.sendKeys("USD");
+        WebElement targetCurrency = driver.findElement(By.id("targetCurrency"));
+        targetCurrency.sendKeys("EUR");
+
+        // Enter a non-numeric value as the amount to convert
+        WebElement amount = driver.findElement(By.id("amount"));
+        amount.sendKeys("invalid");
+
+        // Click Convert button
+        WebElement convertButton = driver.findElement(By.id("convertButton"));
+        convertButton.click();
+
+        // Verify the error message
+        WebElement errorMessage = driver.findElement(By.id("errorMessage"));
+        Assert.assertTrue(errorMessage.isDisplayed());
+    }
+
+    @Test
+    public void testConversionRateNotAvailable() {
+        // Select currencies for which conversion rate is not available
+        WebElement sourceCurrency = driver.findElement(By.id("sourceCurrency"));
+        sourceCurrency.sendKeys("USD");
+        WebElement targetCurrency = driver.findElement(By.id("targetCurrency"));
+        targetCurrency.sendKeys("XYZ");
+
+        // Enter amount to convert
+        WebElement amount = driver.findElement(By.id("amount"));
+        amount.sendKeys("100");
+
+        // Click Convert button
+        WebElement convertButton = driver.findElement(By.id("convertButton"));
+        convertButton.click();
+
+        // Verify the error message
+        WebElement errorMessage = driver.findElement(By.id("errorMessage"));
+        Assert.assertTrue(errorMessage.isDisplayed());
+    }
+
+    @AfterClass
+    public void tearDown() {
+        // Close the browser
+        driver.quit();
+    }
+}
